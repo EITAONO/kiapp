@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam Photo Capture</title>
+</head>
+
+<body>
+    <video id="videoElement" autoplay></video>
+    <button id="captureButton">Capture Photo</button>
+    <canvas id="canvasElement" style="display:none;"></canvas>
+    <img id="photoElement">
+
+    <script src="script.js"></script>
+</body>
+<script>
+    const video = document.getElementById('videoElement');
+    const canvas = document.getElementById('canvasElement');
+    const photo = document.getElementById('photoElement');
+    const captureButton = document.getElementById('captureButton');
+
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+
+    // Get user media
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function (stream) {
+            video.srcObject = stream;
+        })
+        .catch(function (err) {
+            console.log("An error occurred: " + err);
+        });
+
+    // Function to capture photo
+    function capturePhoto() {
+        const context = canvas.getContext('2d');
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        // Convert canvas to image
+        photo.src = canvas.toDataURL('image/png');
+
+        //send canvas content to the server
+        const ctx = canvas.getContext("2d");
+        const imgData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+        const byteArr = imgData.data;
+
+        fetch(
+            '/upload',
+            {
+                method: 'POST',
+                body: byteArr,
+            }
+        ).then(resp => resp.json())
+        .then(data => console.log(data));
+    }
+
+    // Event listener for capture button
+    captureButton.addEventListener('click', capturePhoto);
+
+</script>
+
+</html>
