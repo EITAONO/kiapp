@@ -1,10 +1,8 @@
 import cv2
-import matplotlib.pyplot as plt
 from deepface import DeepFace
 import speech3
 import gpt4v_test
 from flask import Flask, render_template, request, redirect, url_for
-from werkzeug.utils import secure_filename
 import os
 import numpy as np
 
@@ -53,6 +51,4 @@ def upload_image():
     #return [dominant_emotion]
     #return "dww" # emotion, emotion_value
 
-
-if __name__ == '__main__':
-     app.run(host="0.0.0.0", debug=False)
+#app.run(host="0.0.0.0", debug=False)

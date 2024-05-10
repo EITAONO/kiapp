@@ -1,22 +1,10 @@
-from pydub import AudioSegment
 import time
 import math
-from playsound import playsound
-import webbrowser
 import subprocess
-import speech_recognition as sr
 import pandas as pd
 import random
-import pyautogui
-import numpy as np
-import wave
-import openai
-import requests
-import json
-from IPython.display import Javascript
-from base64 import b64decode
 
-def stt(audio_file):
+"""def stt(audio_file):
     st = time.time()
     headers = {
         'accept': 'application/json',
@@ -42,8 +30,8 @@ def stt(audio_file):
     with open('response.json', 'w') as f:
         f.write(response.text)
 
-    return response, elapsed_time
-    # ファイルからiとjの値を読み込む関数
+    return response, elapsed_time"""
+# ファイルからiとjの値を読み込む関数
 def load_values(filename):
     try:
         with open(filename, 'r') as file:
@@ -105,32 +93,15 @@ var record = time => new Promise(async resolve => {
 })
 """
 
-def record(sec, filename='audio.wav'):
+"""def record(sec, filename='audio.wav'):
   display(Javascript(RECORD))
   s = output.eval_js('record(%d)' % (sec * 1000))
   b = b64decode(s.split(',')[1])
   with open(filename, 'wb+') as f:
-    f.write(b)
+    f.write(b)"""
 
 df = pd.read_csv('output4.csv')
 
-def jtalk(t):
-    open_jtalk=['open_jtalk']
-    mech=['-x','/var/lib/mecab/dic/open-jtalk/naist-jdic']
-    htsvoice=['-m','/usr/share/hts-voice/mei/mei_normal.htsvoice']
-    speed=['-r','1.0']#1.0
-    outwav=['-ow','open_jtalk.wav']
-    cmd=open_jtalk+mech+htsvoice+speed+outwav
-    c = subprocess.Popen(cmd,stdin=subprocess.PIPE)
-    c.stdin.write(t.encode())
-    c.stdin.close()
-    c.wait()
-    aplay = ['aplay','-q','open_jtalk.wav']
-    wr = subprocess.Popen(aplay)
-    sound = AudioSegment.from_file("open_jtalk.wav", "wav")
-    times = sound.duration_seconds
-    print(times)
-    time.sleep(math.ceil(times))
     
 def say_datetime(emotion,emotion_value,atmo):
         filename = "values.txt"
